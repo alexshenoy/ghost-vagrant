@@ -68,10 +68,16 @@ Vagrant.configure("2") do |config|
   #   apt-get update
   #   apt-get install -y apache2
   # SHELL
+  config.puppet_install.puppet_version = "4.5.2"
+  config.librarian_puppet.puppetfile_dir = "puppet"
 
-  config.vm.provision "shell", path: "bootstrap.sh"
 
-  config.vm.privision "puppet" do |puppet|
-
+  config.vm.provision "puppet" do |puppet|
+    puppet.module_path = "puppet/modules"
+    puppet.manifests_path = "puppet/manifests"
+    puppet.manifest_file = "default.pp"
+    puppet.environment_path = "puppet/environments"
+    puppet.environment = "production"
+    puppet.options = "--verbose --debug"
   end
 end
